@@ -1,0 +1,4 @@
+Implementation
+Transitioned: 2026-03-27
+Previous: Architecture
+Gate: PASS — 10/10 specs APPROVED, 5 ADRs accepted, project scaffolded

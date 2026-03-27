@@ -1,0 +1,102 @@
+{
+  "name": "typescript-complexity-profiler",
+  "displayName": "TypeScript Complexity Profiler",
+  "description": "Empirically measures algorithmic complexity of TypeScript functions and shows inline annotations",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other", "Linters"],
+  "activationEvents": ["onLanguage:typescript"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tsComplexity.analyzeFile",
+        "title": "Analyze Complexity",
+        "category": "TypeScript Complexity"
+      },
+      {
+        "command": "tsComplexity.clearAnnotations",
+        "title": "Clear Complexity Annotations",
+        "category": "TypeScript Complexity"
+      }
+    ],
+    "configuration": {
+      "title": "TypeScript Complexity Profiler",
+      "properties": {
+        "tsComplexity.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the extension globally"
+        },
+        "tsComplexity.triggerOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run analysis automatically on every file save"
+        },
+        "tsComplexity.timeoutMs": {
+          "type": "number",
+          "default": 5000,
+          "minimum": 1000,
+          "maximum": 30000,
+          "description": "Worker execution timeout in milliseconds"
+        },
+        "tsComplexity.inputSizes": {
+          "type": "array",
+          "items": { "type": "number", "minimum": 1 },
+          "default": [10, 30, 100, 300, 1000, 3000, 10000],
+          "description": "Input sizes used for complexity measurement"
+        },
+        "tsComplexity.minConfidence": {
+          "type": "number",
+          "default": 0.92,
+          "minimum": 0.5,
+          "maximum": 1.0,
+          "description": "Minimum R-squared score to report a complexity class (below this shows LOW_CONFIDENCE)"
+        },
+        "tsComplexity.warnThreshold": {
+          "type": "string",
+          "default": "O(n\u00b2)",
+          "enum": ["O(n)", "O(n log n)", "O(n\u00b2)", "O(n\u00b3)", "O(2^n)"],
+          "description": "Minimum complexity class that triggers a Warning diagnostic"
+        },
+        "tsComplexity.errorThreshold": {
+          "type": "string",
+          "default": "O(n\u00b3)",
+          "enum": ["O(n\u00b2)", "O(n\u00b3)", "O(2^n)"],
+          "description": "Minimum complexity class that triggers an Error diagnostic"
+        },
+        "tsComplexity.showSidePanel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open the complexity chart panel after analysis"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "typescript": "^5.3.0",
+    "acorn": "^8.11.0",
+    "escodegen": "^2.1.0",
+    "source-map": "^0.7.4"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "@types/acorn": "^4.0.6",
+    "@types/escodegen": "^0.0.7",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^2.22.0",
+    "mocha": "^10.2.0",
+    "@types/mocha": "^10.0.0"
+  }
+}
